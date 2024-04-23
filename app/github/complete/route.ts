@@ -2,7 +2,10 @@ import { notFound, redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 
 import db from "@/lib/db";
-import getSession from "@/lib/session";
+import updateSession from "@/lib/session/update-session";
+import getAccessToken from "@/lib/auth/github/get-access-token";
+import getGithubProfile from "@/lib/auth/github/get-github-profile";
+import getGithubEmail from "@/lib/auth/github/get-github-email";
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
@@ -11,22 +14,7 @@ export async function GET(request: NextRequest) {
     return notFound();
   }
 
-  // 깃허브에서 인증
-  const accessTokenParams = new URLSearchParams({
-    client_id: process.env.GITHUB_CLIENT_ID!,
-    client_secret: process.env.GITHUB_CLIENT_SECRET!,
-    code,
-  }).toString();
-
-  const accessTokenURL = `https://github.com/login/oauth/access_token?${accessTokenParams}`;
-
-  const accessTokenResponse = await fetch(accessTokenURL, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-    },
-  });
-  const { error, access_token } = await accessTokenResponse.json();
+  const { error, access_token } = await getAccessToken(code);
 
   if (error) {
     return new Response(null, {
@@ -35,13 +23,8 @@ export async function GET(request: NextRequest) {
   }
 
   // 깃허브에서 사용자 프로필 받아오기
-  const userProfileResponse = await fetch("https://api.github.com/user", {
-    headers: {
-      "Authorization": `Bearer ${access_token}`,
-    },
-    cache: "no-cache",
-  });
-  const { id, avatar_url, login } = await userProfileResponse.json();
+  const { id, avatar_url, login } = await getGithubProfile(access_token);
+  const email = await getGithubEmail(access_token);
 
   // 현재 데이터베이스에 존재하는지 확인
   const user = await db.user.findUnique({
@@ -54,19 +37,29 @@ export async function GET(request: NextRequest) {
   });
 
   if (user) {
-    const session = await getSession();
-
-    session.id = user.id;
-    
-    await session.save();
-
+    await updateSession(user);
     return redirect("/profile");
   }
 
-  // 새로운 사용자 생성
+  // 현재 깃허브 username을 username으로 사용하고 있는 사용자 확인
+  let duplicatedUsername = false;
+  const duplicatedUser = await db.user.findUnique({
+    where: {
+      username: login,
+    },
+    select: {
+      id: true,
+    }
+  });
+
+  if (duplicatedUser) {
+    duplicatedUsername = true;
+  }
+
+  // 새로운 사용자 생성 + 중복일 경우 username 뒤에 -gh 붙여주기
   const newUser = await db.user.create({
     data: {
-      username: login,
+      username: login + (duplicatedUsername ? "-gh" : ""),
       github_id: id + "",
       avatar: avatar_url,
     },
@@ -75,11 +68,6 @@ export async function GET(request: NextRequest) {
     }
   });
 
-  const session = await getSession();
-
-  session.id = newUser.id;
-  
-  await session.save();
-
+  await updateSession(newUser);
   return redirect("/profile");
 }
