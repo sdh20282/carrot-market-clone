@@ -2,7 +2,7 @@ export default function Loading() {
   return (
     <div className="p-5 animate-pulse flex flex-col gap-5">
       {
-        [...Array(10)].map((_, idx) => {
+        [...Array(5)].map((_, idx) => {
           return (
             <div key={idx} className="*:rounded-md flex gap-5">
               <div className="size-28 bg-neutral-700" />
