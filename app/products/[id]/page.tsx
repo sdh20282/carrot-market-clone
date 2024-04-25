@@ -55,9 +55,6 @@ export default async function ProductDetail({
 
   const isOwner = await getIsOwner(product.userId);
 
-  console.log(product.user.avatar );
-  
-
   return (
     <div>
       <div className="relative aspect-square">
