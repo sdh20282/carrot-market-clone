@@ -1,17 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useFormState } from "react-dom";
 
 import Button from "@/components/button";
 import Input from "@/components/input";
 
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { uploadProduct } from "./actions";
-import { useFormState } from "react-dom";
 
 export default function AddProduct() {
   const [preview, setPreview] = useState("");
-  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { files } } = event;
 
     if (!files) {
