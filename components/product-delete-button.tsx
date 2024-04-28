@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import db from "@/lib/db";
 
-export default function DeleteButton({ id }: { id: number }) {
+export default function ProductDeleteButton({ id }: { id: number }) {
   const deleteProduct = async () => {
     "use server";
 

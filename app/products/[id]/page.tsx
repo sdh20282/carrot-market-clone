@@ -6,7 +6,8 @@ import db from "@/lib/db";
 import getSession from "@/lib/session/get-session";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { formatToWon } from "@/lib/utils";
-import DeleteButton from "./components/delete-button";
+
+import ProductDeleteButton from "@/components/product-delete-button";
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -76,12 +77,12 @@ export default async function ProductDetail({
         <h1 className="text-2xl font-semibold">{product.title}</h1>
         <p>{product.description}</p>
       </div>
-      <div className="fixed w-full bottom-0 left-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center">
+      <div className="fixed w-full bottom-0 left-0 py-7 px-10 bg-neutral-800 flex justify-between items-center">
         <span className="font-semibold text-lg">{formatToWon(product.price)}원</span>
         <div className="flex gap-3">
           {
             isOwner
-            ? <DeleteButton id={product.id} />
+            ? <ProductDeleteButton id={product.id} />
             : null
           }
           <Link className="bg-orange-500 px-5 py-2.5 rounded-md font-semibold text-white hover:bg-orange-400 transition" href={``} >채팅하기</Link>
