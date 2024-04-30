@@ -9,6 +9,9 @@ import { Prisma } from "@prisma/client";
 const getCachedProducts = nextCache(
   getInitialProducts,
   ['home-products'],
+  {
+    revalidate: 60,
+  }
 );
 
 async function getInitialProducts() {
@@ -36,7 +39,7 @@ export const metadata = {
 }
 
 export default async function Products() {
-  const initialProducts = await getInitialProducts();
+  const initialProducts = await getCachedProducts();
 
   return (
     <div>
