@@ -62,7 +62,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
           )
         })
       }
-      {
+      {/* {
         isLastPage
         ? null
         : <span ref={trigger} className="mb-96 text-sm font-semibold bg-orange-500 w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95">
@@ -72,7 +72,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
             : "Load more..."
           }
         </span>
-      }
+      } */}
     </div>
   )
 }

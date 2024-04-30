@@ -2,39 +2,23 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 
-import db from "@/lib/db";
-import getSession from "@/lib/session/get-session";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { formatToWon } from "@/lib/utils";
 
 import ProductDeleteButton from "@/components/product-delete-button";
+import getIsOwner from "@/lib/database/get-is-owner";
+import getProduct from "@/lib/database/get-product";
 
-async function getIsOwner(userId: number) {
-  const session = await getSession();
+export async function generateMetadata({
+  params
+}: {
+  params: { id: string }
+}) {
+  const product = await getProduct(Number(params.id));
 
-  if (session.id) {
-    return session.id === userId;
+  return {
+    title: `${product?.title}`
   }
-
-  return false;
-}
-
-async function getProduct(id: number) {
-  const product = await db.product.findUnique({
-    where: {
-      id,
-    },
-    include: {
-      user: {
-        select: {
-          username: true,
-          avatar: true,
-        }
-      }
-    }
-  });
-
-  return product;
 }
 
 export default async function ProductDetail({
@@ -57,7 +41,7 @@ export default async function ProductDetail({
   const isOwner = await getIsOwner(product.userId);
 
   return (
-    <div>
+    <div className="py-10">
       <div className="relative aspect-square">
         <Image fill src={product.photo} alt={product.title} className="object-cover" />
       </div>

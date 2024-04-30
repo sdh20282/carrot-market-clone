@@ -6,37 +6,9 @@ import { UserIcon } from "@heroicons/react/24/solid";
 
 import CloseButton from "./components/close-button";
 import ProductDeleteButton from "@/components/product-delete-button";
-import getSession from "@/lib/session/get-session";
-import db from "@/lib/db";
 import { formatToWon } from "@/lib/utils";
-
-async function getIsOwner(userId: number) {
-  const session = await getSession();
-
-  if (session.id) {
-    return session.id === userId;
-  }
-
-  return false;
-}
-
-async function getProduct(id: number) {
-  const product = await db.product.findUnique({
-    where: {
-      id,
-    },
-    include: {
-      user: {
-        select: {
-          username: true,
-          avatar: true,
-        }
-      }
-    }
-  });
-
-  return product;
-}
+import getIsOwner from "@/lib/database/get-is-owner";
+import getProduct from "@/lib/database/get-product";
 
 export default async function Modal({
   params
