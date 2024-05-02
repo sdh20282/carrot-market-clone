@@ -91,6 +91,8 @@ export default async function ProductDetail({
   );
 }
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const products = await getAllProductsId();
   
