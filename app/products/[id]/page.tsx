@@ -9,6 +9,7 @@ import ProductDeleteButton from "@/components/product-delete-button";
 import getIsOwner from "@/lib/database/get-is-owner";
 import getProduct, { getCachedProduct, getCachedProductTitle, getProductTitle } from "@/lib/database/get-product";
 import { revalidateTag } from "next/cache";
+import getAllProductsId from "@/lib/database/get-all-products-id";
 
 export async function generateMetadata({
   params
@@ -42,7 +43,8 @@ export default async function ProductDetail({
     return notFound();
   }
 
-  const isOwner = await getIsOwner(product.userId);
+  // const isOwner = await getIsOwner(product.userId);
+  const isOwner = false;
 
   const revalidate = async () => {
     "use server";
@@ -87,4 +89,11 @@ export default async function ProductDetail({
       </div >
     </div >
   );
+}
+
+export async function generateStaticParams() {
+  const products = await getAllProductsId();
+  
+
+  return products.map(product => ({ id: product.id + "" }));
 }
