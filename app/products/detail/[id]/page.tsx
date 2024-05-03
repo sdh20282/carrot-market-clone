@@ -9,7 +9,7 @@ import ProductDeleteButton from "@/components/product-delete-button";
 import getIsOwner from "@/lib/database/get-is-owner";
 import getProduct, { getCachedProduct, getCachedProductTitle, getProductTitle } from "@/lib/database/get-product";
 import { revalidateTag } from "next/cache";
-import getAllProductsId from "@/lib/database/get-all-products-id";
+import getProductIdList from "@/lib/database/get-product-id-list";
 
 export async function generateMetadata({
   params
@@ -94,7 +94,7 @@ export default async function ProductDetail({
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const products = await getAllProductsId();
+  const products = await getProductIdList();
   
 
   return products.map(product => ({ id: product.id + "" }));

@@ -4,6 +4,10 @@ export default function HomeLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }>) {
+  // console.log('===================================');
+  // console.log(modal);
+  
+
   return (
     <>
       {children}
