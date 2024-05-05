@@ -5,19 +5,24 @@ import { useEffect, useRef, useState } from "react";
 import { getMoreProducts } from "@/app/(tabs)/home/actions";
 import ListProduct from "@/components/list-product"
 
-import { InitialProducts } from "@/lib/database/get-product-list";
+import { InitialProducts } from "@/lib/database/get-initial-product-list";
 
 interface ProductListProps {
   initialProducts: InitialProducts;
 }
 
 export default function ProductList({ initialProducts }: ProductListProps) {
-  const [products, setProducts] = useState<InitialProducts>(initialProducts);
+  const [products, setProducts] = useState<InitialProducts>([]);
   const [page, setPage] = useState<number>(0);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    setProducts([...initialProducts]);
+  }, [initialProducts]);
+
   const trigger = useRef<HTMLSpanElement>(null);
+  
   useEffect(() => {
     const observer = new IntersectionObserver(async (
       entries: IntersectionObserverEntry[],
@@ -63,17 +68,17 @@ export default function ProductList({ initialProducts }: ProductListProps) {
           )
         })
       }
-      {/* {
+      {
         isLastPage
         ? null
-        : <span ref={trigger} className="mb-96 text-sm font-semibold bg-orange-500 w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95">
+        : <span ref={trigger} className="text-sm font-semibold bg-orange-500 w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95">
           {
             isLoading
             ? "Loading..."
             : "Load more..."
           }
         </span>
-      } */}
+      }
     </div>
   )
 }

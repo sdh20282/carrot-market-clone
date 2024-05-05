@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
-import ProductList from "@/components/product-list";
-import { getCachedInitialProductList } from "@/lib/database/get-product-list";
+import ProductList from "./components/product-list";
+import { getCachedInitialProductList } from "@/lib/database/get-initial-product-list";
 
 export const metadata = {
   title: "Home",
@@ -20,7 +20,7 @@ export default async function Products() {
   // }
 
   return (
-    <div>
+    <div className="pb-24">
       <ProductList initialProducts={initialProducts} />
       {/* <form action={revalidate}>
         <button>Revalidate</button>

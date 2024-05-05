@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 import { File } from "buffer";
 import fs from "fs/promises";
@@ -51,5 +52,6 @@ export async function uploadProduct(prev: any, formData: FormData) {
     }
   });
 
-  redirect(`/products/${product.id}`);
+  revalidatePath("/home");
+  redirect("/home");
 }

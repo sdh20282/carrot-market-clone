@@ -1,4 +1,4 @@
-import getSession from "../session/get-session";
+import getSession from "./get-session";
 
 export default async function getIsOwner(userId: number) {
   const session = await getSession();

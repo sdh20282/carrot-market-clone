@@ -1,9 +1,10 @@
-import { unstable_cache as nextCache, revalidatePath } from "next/cache";
+import { unstable_cache as nextCache } from "next/cache";
 import { Prisma } from "@prisma/client";
 
 import db from "@/lib/db";
+import { INITIALPRODUCTLENGTH } from "@/lib/constants";
 
-export async function getInitialProductList() {
+async function getInitialProductList() {
   const products = await db.product.findMany({
     select: {
       title: true,
@@ -12,7 +13,7 @@ export async function getInitialProductList() {
       photo: true,
       id: true,
     },
-    // take: 1,
+    take: INITIALPRODUCTLENGTH,
     orderBy: {
       created_at: "desc",
     }
@@ -23,9 +24,9 @@ export async function getInitialProductList() {
 
 export const getCachedInitialProductList = nextCache(
   getInitialProductList,
-  ['product-list'],
+  ['initial-product-list'],
   {
-    tags: ["product-list"],
+    tags: ["initial-product-list"],
   }
 );
 

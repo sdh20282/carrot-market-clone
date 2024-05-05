@@ -7,7 +7,7 @@ import { UserIcon } from "@heroicons/react/24/solid";
 import CloseButton from "./components/close-button";
 import ProductDeleteButton from "@/components/product-delete-button";
 import { formatToWon } from "@/lib/utils";
-import getIsOwner from "@/lib/database/get-is-owner";
+import getIsOwner from "@/lib/session/get-is-owner";
 import getProduct from "@/lib/database/get-product";
 
 export default async function Modal({
