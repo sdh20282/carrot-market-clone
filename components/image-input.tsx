@@ -1,24 +1,26 @@
 "use client";
 
-import { InputHTMLAttributes, useRef, useState } from "react";
+import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
 
 import { PhotoIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 interface ImageInputProps {
   name: string;
   errors?: string[];
+  image? : string;
 }
 
 export default function ImageInput({
   name,
   errors = [],
+  image = "",
   ...rest
 }: ImageInputProps & InputHTMLAttributes<HTMLInputElement>) {
-  const [preview, setPreview] = useState("");
+  const [preview, setPreview] = useState(image);
 
   const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { files } } = event;
-    
+
     if (!files) {
       alert("이미지 파일을 추가해주세요!");
 
@@ -50,6 +52,15 @@ export default function ImageInput({
   };
 
   const imageRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (image && imageRef.current) {
+      // imageRef.current.value = image;
+
+      // console.log(imageRef.current.value);
+    }
+  }, [image]);
+
   const onCancleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 

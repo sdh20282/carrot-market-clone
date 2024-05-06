@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { getCachedProduct } from "@/lib/database/get-product";
 import getIsOwner from "@/lib/session/get-is-owner";
 
+import EditForm from "./components/editForm";
+
 export default async function ProductEditPage({
   params
 }: {
@@ -27,6 +29,8 @@ export default async function ProductEditPage({
   }
 
   return (
-    <h1>Edit Page</h1>
+    <>
+      <EditForm product={product} />
+    </>
   )
 }

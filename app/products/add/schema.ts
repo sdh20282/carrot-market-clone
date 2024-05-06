@@ -16,4 +16,4 @@ export const productSchema = z.object({
   }),
 });
 
-export type ProductType = z.infer<typeof productSchema>;
+// export type ProductType = z.infer<typeof productSchema>;

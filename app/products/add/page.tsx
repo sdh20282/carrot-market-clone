@@ -1,4 +1,5 @@
 "use client";
+
 import { useFormState } from "react-dom";
 
 import Button from "@/components/button";
@@ -42,5 +43,5 @@ export default function AddProduct() {
         <Button text="작성 완료" />
       </form>
     </div>
-  )
+  );
 }

@@ -53,5 +53,6 @@ export async function uploadProduct(prev: any, formData: FormData) {
   });
 
   revalidatePath("/home");
-  redirect(`/product/detail/${product.id}`);
+  revalidatePath(`/products/detail/${product.id}`);
+  redirect(`/products/detail/${product.id}`);
 }
