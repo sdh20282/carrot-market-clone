@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, forwardRef } from "react";
+import { InputHTMLAttributes } from "react";
 
 interface InputProps {
   errors?: string[];

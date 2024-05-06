@@ -9,6 +9,7 @@ import ProductDeleteButton from "@/components/product-delete-button";
 import { formatToWon } from "@/lib/utils";
 import getIsOwner from "@/lib/session/get-is-owner";
 import getProduct from "@/lib/database/get-product";
+import ProductEditButton from "@/components/product-edit-button";
 
 export default async function Modal({
   params
@@ -56,10 +57,14 @@ export default async function Modal({
           <span className="font-semibold text-lg">{formatToWon(product.price)}원</span>
         </div>
         <div className="w-full p-5 flex items-center">
-          <div className="flex gap-3 ml-auto">
+          <div className="flex gap-5 ml-auto">
             {
               isOwner
-              ? <ProductDeleteButton id={product.id} />
+              ? 
+              <div className="flex gap-3">
+                <ProductDeleteButton id={product.id} />
+                <ProductEditButton id={product.id} />
+              </div>
               : null
             }
             <Link className="bg-orange-500 px-5 py-2.5 rounded-md font-semibold text-white hover:bg-orange-400 transition" href={``} >채팅하기</Link>

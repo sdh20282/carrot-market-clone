@@ -11,6 +11,7 @@ import { getCachedProduct } from "@/lib/database/get-product";
 import getProductIdList from "@/lib/database/get-product-id-list";
 import getIsOwner from "@/lib/session/get-is-owner";
 import { getCachedProductTitle } from "@/lib/database/get-product-title";
+import ProductEditButton from "@/components/product-edit-button";
 
 export async function generateMetadata({
   params
@@ -69,7 +70,11 @@ export default async function ProductDetail({
         <div className="flex gap-3">
           {
             isOwner
-            ? <ProductDeleteButton id={product.id} />
+            ?
+            <div className="flex gap-5">
+              <ProductDeleteButton id={product.id} />
+              <ProductEditButton id={product.id} />
+            </div>
             : null
           }
           <Link className="bg-orange-500 px-5 py-2.5 rounded-md font-semibold text-white hover:bg-orange-400 transition" href={``} >채팅하기</Link>

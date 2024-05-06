@@ -17,7 +17,7 @@ export async function uploadProduct(prev: any, formData: FormData) {
     description: formData.get("description"),
   }
 
-  if (data.photo instanceof File) {
+  if (data.photo instanceof File && data.photo.size !== 0) {
     const photoData = await data.photo.arrayBuffer();
     await fs.appendFile(`./public/${data.photo.name}`, Buffer.from(photoData));
     data.photo = `/${data.photo.name}`;
@@ -53,5 +53,5 @@ export async function uploadProduct(prev: any, formData: FormData) {
   });
 
   revalidatePath("/home");
-  redirect("/home");
+  redirect(`/product/detail/${product.id}`);
 }

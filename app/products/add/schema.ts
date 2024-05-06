@@ -3,6 +3,7 @@ import { z } from "zod";
 export const productSchema = z.object({
   photo: z.string({
     required_error: "Photo is required!",
+    invalid_type_error: "Photo is required!",
   }),
   title: z.string({
     required_error: "Title is required!",
