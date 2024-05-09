@@ -1,14 +1,13 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { EyeIcon, HandThumbUpIcon as HandThumbUpIconSloid, UserIcon } from "@heroicons/react/24/solid";
-import { HandThumbUpIcon as HandThumbUpIconOutline } from "@heroicons/react/24/outline";
+import { EyeIcon, UserIcon } from "@heroicons/react/24/solid";
 
 import { formatToTimeAgo } from "@/lib/utils";
 import { getCachedPost } from "@/lib/database/get-post"
 import { getCachedLikedStatus } from "@/lib/database/get-is-liked";
 
-import { dislikePost, likePost } from "./actions";
+import LikeButton from "@/components/like-button";
 
 export default async function PostDetail({
   params
@@ -25,18 +24,6 @@ export default async function PostDetail({
 
   if (!post) {
     return notFound();
-  }
-
-  const likePostAction = async () => {
-    "use server";
-
-    await likePost(id);
-  };
-  
-  const dislikePostAction = async () => {
-    "use server";
-
-    await dislikePost(id);
   }
 
   const { isLiked, likeCount } = await getCachedLikedStatus(id);
@@ -70,18 +57,7 @@ export default async function PostDetail({
           <EyeIcon className="size-5" />
           <span>조회 {post.views}</span>
         </div>
-        <form action={isLiked ? dislikePostAction : likePostAction}>
-          <button
-            className={`flex items-center gap-2 text-neutral-400 text-sm border border-neutral-400 rounded-full py-2 px-4 transition-colors ${isLiked ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-400" : "hover:bg-neutral-800"}`}
-          >
-            {
-              isLiked
-              ? <HandThumbUpIconSloid className="size-5" />
-              : <HandThumbUpIconOutline className="size-5" />
-            }
-            <span>공감하기 ({likeCount})</span>
-          </button>
-        </form>
+        <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
       </div>
     </div>
   )
