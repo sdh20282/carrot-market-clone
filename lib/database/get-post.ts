@@ -1,6 +1,8 @@
-import db from "../db";
+import { unstable_cache as nextCache } from "next/cache";
 
-export async function getPost(id: number) {
+import db from "@/lib/db";
+
+async function getPost(id: number) {
   try {
     const post = db.post.update({
       where: {
@@ -21,7 +23,6 @@ export async function getPost(id: number) {
         _count: {
           select: {
             comments: true,
-            likes: true,
           },
         },
       },
@@ -32,3 +33,8 @@ export async function getPost(id: number) {
     return null;
   }
 }
+
+export const getCachedPost = nextCache(getPost, ["post-detail"], {
+  tags: ["post-detail"],
+  revalidate: 600,
+});

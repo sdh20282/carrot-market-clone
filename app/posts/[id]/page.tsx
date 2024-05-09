@@ -1,14 +1,14 @@
 import Image from "next/image";
-import { revalidatePath } from "next/cache";
 import { notFound } from "next/navigation";
 
-import { EyeIcon, HandThumbUpIcon, UserIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, HandThumbUpIcon as HandThumbUpIconSloid, UserIcon } from "@heroicons/react/24/solid";
+import { HandThumbUpIcon as HandThumbUpIconOutline } from "@heroicons/react/24/outline";
 
-import { getPost } from "@/lib/database/get-post"
 import { formatToTimeAgo } from "@/lib/utils";
-import db from "@/lib/db";
-import getSession from "@/lib/session/get-session";
-import { getIsLiked } from "@/lib/database/get-is-liked";
+import { getCachedPost } from "@/lib/database/get-post"
+import { getCachedLikedStatus } from "@/lib/database/get-is-liked";
+
+import { dislikePost, likePost } from "./actions";
 
 export default async function PostDetail({
   params
@@ -21,49 +21,25 @@ export default async function PostDetail({
     return notFound();
   }
 
-  const post = await getPost(id);
+  const post = await getCachedPost(id);
 
   if (!post) {
     return notFound();
   }
 
-  const likePost = async () => {
+  const likePostAction = async () => {
     "use server";
 
-    try {
-      const session = await getSession();
-
-      await db.like.create({
-        data: {
-          postId: id,
-          userId: session.id!,
-        },
-      });
-      
-      revalidatePath(`/post/${id}`);
-    } catch (e) {}
+    await likePost(id);
   };
   
-  const dislikePost = async () => {
+  const dislikePostAction = async () => {
     "use server";
-  
-    try {
-      const session = await getSession();
 
-      await db.like.delete({
-        where: {
-          id: {
-            postId: id,
-            userId: session.id!,
-          },
-        },
-      });
-
-      revalidatePath(`/post/${id}`);
-    } catch (e) {}
+    await dislikePost(id);
   }
 
-  const isLiked = await getIsLiked(id);
+  const { isLiked, likeCount } = await getCachedLikedStatus(id);
 
   return (
     <div className="p-5 text-white">
@@ -94,12 +70,16 @@ export default async function PostDetail({
           <EyeIcon className="size-5" />
           <span>조회 {post.views}</span>
         </div>
-        <form action={isLiked ? dislikePost : likePost}>
+        <form action={isLiked ? dislikePostAction : likePostAction}>
           <button
-            className={`flex items-center gap-2 text-neutral-400 text-sm border border-neutral-400 rounded-full p-2 hover:bg-neutral-800 transition-colors`}
+            className={`flex items-center gap-2 text-neutral-400 text-sm border border-neutral-400 rounded-full py-2 px-4 transition-colors ${isLiked ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-400" : "hover:bg-neutral-800"}`}
           >
-            <HandThumbUpIcon className="size-5" />
-            <span>공감하기 ({post._count.likes})</span>
+            {
+              isLiked
+              ? <HandThumbUpIconSloid className="size-5" />
+              : <HandThumbUpIconOutline className="size-5" />
+            }
+            <span>공감하기 ({likeCount})</span>
           </button>
         </form>
       </div>

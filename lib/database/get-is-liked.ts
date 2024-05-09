@@ -1,10 +1,12 @@
-import db from "../db";
-import getSession from "../session/get-session";
+import { unstable_cache as nextCache } from "next/cache";
 
-export async function getIsLiked(postId: number) {
+import db from "@/lib/db";
+import getSession from "@/lib/session/get-session";
+
+async function getLikedStatus(postId: number) {
   const session = await getSession();
   
-  const like = await db.like.findUnique({
+  const isLiked = await db.like.findUnique({
     where: {
       id: {
         postId,
@@ -13,5 +15,22 @@ export async function getIsLiked(postId: number) {
     },
   });
 
-  return Boolean(like);
+  const likeCount = await db.like.count({
+    where: {
+      postId
+    }
+  })
+
+  return {
+    likeCount,
+    isLiked: Boolean(isLiked),
+  };
+}
+
+export async function getCachedLikedStatus(postId: number) {
+  const cachedOperation = nextCache(getLikedStatus, ["post-like-status"], {
+    tags: [`like-status-${postId}`],
+  });
+
+  return cachedOperation(postId);
 }
