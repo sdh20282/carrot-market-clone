@@ -1,6 +1,6 @@
 import db from "../db";
 
-export async function getPosts() {
+export async function getPostList() {
   const posts = await db.post.findMany({
     select: {
       id: true,

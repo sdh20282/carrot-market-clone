@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getPosts } from "@/lib/database/get-posts"
+import { getPostList } from "@/lib/database/get-post-list";
 import { formatToTimeAgo } from "@/lib/utils";
 import { ChatBubbleBottomCenterIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
 
@@ -9,7 +9,7 @@ export const metadata = {
 }
 
 export default async function Life() {
-  const posts = await getPosts();
+  const posts = await getPostList();
 
   return (
     <div className="p-5 flex flex-col">
