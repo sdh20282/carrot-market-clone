@@ -4,7 +4,7 @@ import { HandThumbUpIcon as HandThumbUpIconSloid } from "@heroicons/react/24/sol
 import { HandThumbUpIcon as HandThumbUpIconOutline } from "@heroicons/react/24/outline";
 
 import { likePost, dislikePost } from "@/app/posts/[id]/actions";
-import { useOptimistic } from "react";
+import { startTransition, useOptimistic } from "react";
 
 export default function LikeButton({
   isLiked, likeCount, postId
@@ -15,7 +15,7 @@ export default function LikeButton({
 }) {
   const [state, reducer] = useOptimistic(
     { isLiked, likeCount }, 
-    (previousState, payload) => {
+    (previousState) => {
       return {
         isLiked: !previousState.isLiked,
         likeCount: previousState.isLiked ? previousState.likeCount - 1 : previousState.likeCount + 1,
@@ -24,7 +24,9 @@ export default function LikeButton({
   );
 
   const onClick = async () => {
-    reducer(undefined);
+    startTransition(() => {
+      reducer(undefined);
+    });
 
     if (isLiked) {
       await dislikePost(postId);
@@ -43,7 +45,7 @@ export default function LikeButton({
         ? <HandThumbUpIconSloid className="size-5" />
         : <HandThumbUpIconOutline className="size-5" />
       }
-      <span>공감하기 ({state.likeCount})</span>
+      <span>좋아요 ({state.likeCount})</span>
     </button>
   )
 }

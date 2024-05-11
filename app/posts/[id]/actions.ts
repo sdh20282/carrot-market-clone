@@ -1,6 +1,9 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
+import { notFound } from "next/navigation";
+
+import { postSchema } from "./schema";
 
 import db from "@/lib/db";
 import getSession from "@/lib/session/get-session";
@@ -35,4 +38,45 @@ export const dislikePost = async (postId: number) => {
     
     revalidateTag(`like-status-${postId}`);
   } catch (e) {}
+}
+
+export async function uploadComment(prev: any, formData: FormData) {
+  const data = {
+    comment: formData.get("comment"),
+    postId: formData.get("postId"),
+  };
+
+  const result = postSchema.safeParse(data);
+
+  if (!result.success) {
+    return result.error.flatten();
+  }
+
+  const session = await getSession();
+
+  if (!session.id) {
+    return notFound();
+  }
+
+  try {
+    await db.comment.create({
+      data: {
+        payload: result.data.comment,
+        user: {
+          connect: {
+            id: session.id
+          }
+        },
+        post: {
+          connect: {
+            id: result.data.postId,
+          }
+        }
+      }
+    });
+
+    revalidateTag(`comment-list-${result.data.postId}`);
+  } catch (error) {
+    return notFound();
+  }
 }

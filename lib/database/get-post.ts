@@ -1,4 +1,5 @@
 import { unstable_cache as nextCache } from "next/cache";
+import { Prisma } from "@prisma/client";
 
 import db from "@/lib/db";
 
@@ -38,3 +39,5 @@ export const getCachedPost = nextCache(getPost, ["post-detail"], {
   tags: ["post-detail"],
   revalidate: 600,
 });
+
+export type PostType = Prisma.PromiseReturnType<typeof getPost>;

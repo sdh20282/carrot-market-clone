@@ -14,6 +14,9 @@ export async function getPostList() {
           likes: true
         }
       }
+    },
+    orderBy: {
+      created_at: "desc",
     }
   });
 
