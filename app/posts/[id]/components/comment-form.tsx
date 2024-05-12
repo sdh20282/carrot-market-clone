@@ -13,13 +13,25 @@ export default function CommentForm({
 }: {
   postId: number
 }) {
-  const [state, dispatch] = useFormState(uploadComment, null);
-  const formRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onUploladComment = async (prev: any, formData: FormData) => {
+    const result = await uploadComment(prev, formData);
+
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+
+    return result;
+  }
+
+  const [state, dispatch] = useFormState(onUploladComment, null);
 
   return (
-    <form action={dispatch} className="fixed bottom-0 pt-6 px-4 pb-10 max-w-screen-sm w-full flex gap-6 border-neutral-600 border-t" ref={formRef}>
+    <form action={dispatch} className="fixed bottom-0 pt-6 px-4 pb-10 max-w-screen-sm w-full flex gap-6 border-neutral-600 border-t">
       <CommentInput 
         name="comment"
+        ref={inputRef}
         type="text"
         placeholder="내용을 입력하세요..."
         required

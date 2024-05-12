@@ -6,9 +6,8 @@ import ListComment from "@/components/list-comment";
 import { CommentListType } from "@/lib/database/get-comment-list";
 
 export default function CommentList({
-  postId, commentList
+  commentList
 }: {
-  postId: number,
   commentList: CommentListType
 }) {
   const [comments, setComments] = useState<CommentListType>([]);

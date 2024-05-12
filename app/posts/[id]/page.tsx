@@ -37,7 +37,7 @@ export default async function PostDetail({
         likeCount={likeCount}
         postId={id}
       />
-      <CommentList postId={id} commentList={comments} />
+      <CommentList commentList={comments} />
       <CommentForm postId={id} />
     </div>
   )
