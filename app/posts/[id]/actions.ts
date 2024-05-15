@@ -80,3 +80,17 @@ export async function uploadComment(prev: any, formData: FormData) {
     return notFound();
   }
 }
+
+export async function deleteComment({ postId, commentId }: { postId: number, commentId: number }) {
+  try {
+    await db.comment.delete({
+      where: {
+        id: commentId
+      }
+    });
+
+    revalidateTag(`comment-list-${postId}`);
+  } catch (error) {
+    return notFound();
+  }
+}

@@ -37,7 +37,7 @@ export default function CommentSection({
         {
           optimisticCommentList.map((comment, idx) => {
             return (
-              <ListComment key={idx} comment={comment} />
+              <ListComment key={idx} comment={comment} userId={user!.id} />
             )
           })
         }
