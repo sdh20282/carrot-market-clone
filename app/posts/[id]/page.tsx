@@ -35,7 +35,7 @@ export default async function PostDetail({
   const { isLiked, likeCount } = await getCachedLikedStatus(id);
   
   return (
-    <div className="p-5 text-white">
+    <div className="p-5 pb-24 text-white">
       <PostContent
         post={post}
         isLiked={isLiked}

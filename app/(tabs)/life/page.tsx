@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { getPostList } from "@/lib/database/get-post-list";
 import { formatToTimeAgo } from "@/lib/utils";
-import { ChatBubbleBottomCenterIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
+import { ChatBubbleBottomCenterIcon, HandThumbUpIcon, PlusIcon } from "@heroicons/react/24/solid";
 
 export const metadata = {
   title: "동네생활",
@@ -12,7 +12,7 @@ export default async function Life() {
   const posts = await getPostList();
 
   return (
-    <div className="p-5 flex flex-col">
+    <div className="p-5 pb-24 flex flex-col">
       {
         posts.map((post) => (
           <Link
@@ -42,6 +42,9 @@ export default async function Life() {
           </Link>
         ))
       }
+      <Link href="/posts/add" className="bg-orange-500 flex items-center justify-center rounded-full size-16 fixed bottom-24 right-8 text-white transition-colors hover:bg-orange-400">
+        <PlusIcon className="size-10" />
+      </Link>
     </div>
   )
 }
