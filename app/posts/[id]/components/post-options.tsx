@@ -34,7 +34,7 @@ export default function PostOptions({
   const onDeletePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
     await deletePost(postId);
 
-    router.push("/life")
+    router.push("/life");
   }
 
   return (

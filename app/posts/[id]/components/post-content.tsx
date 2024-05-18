@@ -7,8 +7,9 @@ import PostOptions from "./post-options";
 import LikeButton from "@/components/like-button";
 import { formatToTimeAgo } from "@/lib/utils";
 import { PostType } from "@/lib/database/get-post";
+import getSession from "@/lib/session/get-session";
 
-export default function PostContent({
+export default async function PostContent({
   post, isLiked, likeCount, postId
 }: {
   post: PostType,
@@ -16,6 +17,8 @@ export default function PostContent({
   likeCount: number,
   postId: number,
 }) {
+  const session = await getSession();
+
   return (
     <>
       <div className="flex items-center gap-4 mb-5">
@@ -37,7 +40,11 @@ export default function PostContent({
             <span>{formatToTimeAgo(post!.created_at.toString())}</span>
           </div>
         </div>
-        <PostOptions postId={postId} />
+        {
+          session.id === post?.userId
+          ? <PostOptions postId={postId} />
+          : null
+        }
       </div>
       <h2 className="text-lg font-semibold">{post!.title}</h2>
       <p className="mb-5">{post!.description}</p>
