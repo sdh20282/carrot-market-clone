@@ -1,50 +1,32 @@
 import Link from "next/link";
 
-import { getPostList } from "@/lib/database/get-post-list";
-import { formatToTimeAgo } from "@/lib/utils";
-import { ChatBubbleBottomCenterIcon, HandThumbUpIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
+
+import PostLink from "./components/post-link";
+
+import { getCachedPostList } from "@/lib/database/get-post-list";
 
 export const metadata = {
   title: "동네생활",
 }
 
+export const revalidate = 30;
+
 export default async function Life() {
-  const posts = await getPostList();
+  const posts = await getCachedPostList();
 
   return (
     <div className="p-5 pb-24 flex flex-col">
-      {
-        posts.map((post) => (
-          <Link
-            key={post.id}
-            href={`/posts/${post.id}`}
-            className="pb-5 mb-5 border-b border-neutral-500 text-neutral-400 flex  flex-col gap-2 last:pb-0 last:border-b-0"
-          >
-            <h2 className="text-white text-lg font-semibold">{post.title}</h2>
-            <p>{post.description}</p>
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex gap-4 items-center">
-                <span>{formatToTimeAgo(post.created_at.toString())}</span>
-                <span>·</span>
-                <span>조회 {post.views}</span>
-              </div>
-              <div className="flex gap-4 items-center *:flex *:gap-1 *:items-center">
-                <span>
-                  <HandThumbUpIcon className="size-4" />
-                  {post._count.likes}
-                </span>
-                <span>
-                  <ChatBubbleBottomCenterIcon className="size-4" />
-                  {post._count.comments}
-                </span>
-              </div>
-            </div>
-          </Link>
-        ))
-      }
       <Link href="/posts/add" className="bg-orange-500 flex items-center justify-center rounded-full size-16 fixed bottom-24 right-8 text-white transition-colors hover:bg-orange-400">
         <PlusIcon className="size-10" />
       </Link>
+      {
+        posts.map((post) => {
+          return (
+            <PostLink post={post} key={post.id} />
+          );
+        })
+      }
     </div>
   )
 }

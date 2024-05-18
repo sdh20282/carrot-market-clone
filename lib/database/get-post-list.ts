@@ -1,6 +1,9 @@
-import db from "../db";
+import { unstable_cache as nextCache } from "next/cache";
 
-export async function getPostList() {
+import { Prisma } from "@prisma/client";
+import db from "@/lib/db";
+
+async function getPostList() {
   const posts = await db.post.findMany({
     select: {
       id: true,
@@ -22,3 +25,10 @@ export async function getPostList() {
 
   return posts;
 }
+
+export const getCachedPostList = nextCache(getPostList,
+  ["post-list"], {
+  tags: ["post-list"],
+})
+
+export type PostListType = Prisma.PromiseReturnType<typeof getPostList>;

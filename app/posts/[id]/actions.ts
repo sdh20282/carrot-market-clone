@@ -1,12 +1,27 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
-import { notFound } from "next/navigation";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { redirect, notFound } from "next/navigation";
 
 import { postSchema } from "./schema";
 
 import db from "@/lib/db";
 import getSession from "@/lib/session/get-session";
+
+export async function deletePost(postId: number) {
+  try {
+    await db.post.delete({
+      where: {
+        id: postId
+      }
+    });
+    
+    revalidatePath("/life");
+    revalidatePath(`/posts/${postId}`);
+  } catch(e) {
+    console.log(e);
+  }
+}
 
 export const likePost = async (postId: number) => {
   try {
@@ -19,6 +34,7 @@ export const likePost = async (postId: number) => {
       },
     });
     
+    revalidateTag("post-list");
     revalidateTag(`like-status-${postId}`);
   } catch (e) {}
 };
@@ -36,6 +52,7 @@ export const dislikePost = async (postId: number) => {
       },
     });
     
+    revalidateTag("post-list");
     revalidateTag(`like-status-${postId}`);
   } catch (e) {}
 }

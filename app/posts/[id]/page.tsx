@@ -7,6 +7,7 @@ import { getCachedPost } from "@/lib/database/get-post"
 import { getCachedCommentList } from "@/lib/database/get-comment-list";
 import { getCachedLikedStatus } from "@/lib/database/get-is-liked";
 import { getCachedNowUserInfo } from "@/lib/database/get-now-user-info";
+import getPostIdList from "@/lib/database/get-post-id-list";
 
 export default async function PostDetail({
   params
@@ -20,7 +21,7 @@ export default async function PostDetail({
   }
 
   const post = await getCachedPost(id);
-
+  
   if (!post) {
     return notFound();
   }
@@ -45,4 +46,12 @@ export default async function PostDetail({
       <CommentSection postId={id} commentList={comments} user={user} />
     </div>
   )
+}
+
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const posts = await getPostIdList();
+
+  return posts.map(post => ({ id: post.id + "" }));
 }

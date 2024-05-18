@@ -1,4 +1,4 @@
-import { unstable_cache as nextCache } from "next/cache";
+import { unstable_cache as nextCache, revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 
 import db from "@/lib/db";
@@ -27,7 +27,7 @@ async function getPost(id: number) {
           },
         },
       },
-    })
+    });
   
     return post;
   } catch (error) {
@@ -35,9 +35,12 @@ async function getPost(id: number) {
   }
 }
 
-export const getCachedPost = nextCache(getPost, ["post-detail"], {
-  tags: ["post-detail"],
-  revalidate: 600,
-});
+export function getCachedPost(postId: number) {
+  const cachedOperation = nextCache(getPost, ["post-detail"], {
+    tags: [`post-detail-${postId}`],
+  });
+
+  return cachedOperation(postId);
+};
 
 export type PostType = Prisma.PromiseReturnType<typeof getPost>;

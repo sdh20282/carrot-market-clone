@@ -1,6 +1,8 @@
 import Image from "next/image";
 
-import { EllipsisVerticalIcon, EyeIcon, UserIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, UserIcon } from "@heroicons/react/24/solid";
+
+import PostOptions from "./post-options";
 
 import LikeButton from "@/components/like-button";
 import { formatToTimeAgo } from "@/lib/utils";
@@ -35,9 +37,7 @@ export default function PostContent({
             <span>{formatToTimeAgo(post!.created_at.toString())}</span>
           </div>
         </div>
-        <button className="ml-auto">
-          <EllipsisVerticalIcon className="size-5" />
-        </button>
+        <PostOptions postId={postId} />
       </div>
       <h2 className="text-lg font-semibold">{post!.title}</h2>
       <p className="mb-5">{post!.description}</p>

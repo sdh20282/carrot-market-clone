@@ -88,7 +88,6 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const products = await getProductIdList();
-  
 
   return products.map(product => ({ id: product.id + "" }));
 }

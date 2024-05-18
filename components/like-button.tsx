@@ -1,10 +1,11 @@
 "use client";
 
+import { startTransition, useOptimistic } from "react";
+
 import { HandThumbUpIcon as HandThumbUpIconSloid } from "@heroicons/react/24/solid";
 import { HandThumbUpIcon as HandThumbUpIconOutline } from "@heroicons/react/24/outline";
 
 import { likePost, dislikePost } from "@/app/posts/[id]/actions";
-import { startTransition, useOptimistic } from "react";
 
 export default function LikeButton({
   isLiked, likeCount, postId

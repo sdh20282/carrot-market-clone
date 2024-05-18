@@ -28,7 +28,7 @@ async function getLikedStatus(postId: number) {
 }
 
 export async function getCachedLikedStatus(postId: number) {
-  const cachedOperation = nextCache(getLikedStatus, ["post-like-status"], {
+  const cachedOperation = nextCache(getLikedStatus, [`like-status-${postId}`], {
     tags: [`like-status-${postId}`],
   });
 
