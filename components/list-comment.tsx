@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { UserIcon } from "@heroicons/react/24/solid";
 import { formatToTimeAgo } from "@/lib/utils";
-import { deleteComment } from "@/app/posts/[id]/actions";
+import { deleteComment } from "@/app/posts/detail/[id]/actions";
 
 type comment = {
   user: {

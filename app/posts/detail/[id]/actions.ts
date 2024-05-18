@@ -17,7 +17,7 @@ export async function deletePost(postId: number) {
     });
     
     revalidatePath("/life");
-    revalidatePath(`/posts/${postId}`);
+    revalidatePath(`/posts/detail/${postId}`);
   } catch(e) {
     console.log(e);
   }

@@ -45,7 +45,7 @@ export default function PostOptions({
       {
         onModal
         ? <div className="absolute w-24 flex flex-col right-0 top-10 bg-neutral-800 rounded-md py-2 *:text-sm *:text-center *:text-white">
-          <Link href={`/post/edit/${postId}`} className="hover:bg-neutral-700 transition-colors py-2">
+          <Link href={`/posts/edit/${postId}`} className="hover:bg-neutral-700 transition-colors py-2">
             <span>수정</span>
           </Link>
           <button onClick={onDeletePost} className="w-full hover:bg-neutral-700 transition-colors py-2">삭제</button>

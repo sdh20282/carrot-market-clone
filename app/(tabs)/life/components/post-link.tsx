@@ -19,7 +19,7 @@ type PostType = {
 export default function PostLink({ post }: { post: PostType }) {
   return (
     <Link
-      href={`/posts/${post.id}`}
+      href={`/posts/detail/${post.id}`}
       className="pb-5 mb-5 border-b border-neutral-500 text-neutral-400 flex flex-col gap-2 last:pb-0 last:border-b-0"
     >
       <h2 className="text-white text-lg font-semibold">{post.title}</h2>

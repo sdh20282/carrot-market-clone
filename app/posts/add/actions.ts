@@ -51,6 +51,6 @@ export async function uploadPost(prev: any, formData: FormData) {
   });
 
   revalidatePath("/life");
-  revalidatePath(`/posts/${post.id}`);
-  redirect(`/posts/${post.id}`);
+  revalidatePath(`/posts/detail/${post.id}`);
+  redirect(`/posts/detail/${post.id}`);
 }
