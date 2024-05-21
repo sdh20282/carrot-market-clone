@@ -8,21 +8,6 @@ import { postSchema } from "./schema";
 import db from "@/lib/db";
 import getSession from "@/lib/session/get-session";
 
-export async function deletePost(postId: number) {
-  try {
-    await db.post.delete({
-      where: {
-        id: postId
-      }
-    });
-    
-    revalidatePath("/life");
-    revalidatePath(`/posts/detail/${postId}`);
-  } catch(e) {
-    console.log(e);
-  }
-}
-
 export const likePost = async (postId: number) => {
   try {
     const session = await getSession();

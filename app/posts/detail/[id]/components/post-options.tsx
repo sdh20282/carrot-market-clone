@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation'
 
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
-import { deletePost } from "../actions";
 
 export default function PostOptions({
   postId
@@ -31,12 +30,6 @@ export default function PostOptions({
     }
   }, []);
 
-  const onDeletePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    await deletePost(postId);
-
-    router.push("/life");
-  }
-
   return (
     <div className="relative ml-auto" onClick={(e) => { e.stopPropagation(); }} >
       <button className={`rounded-md transition-colors hover:bg-neutral-800 ${onModal ? "bg-neutral-800" : ""}`} onClick={onClickModal}>
@@ -48,7 +41,9 @@ export default function PostOptions({
           <Link href={`/posts/edit/${postId}`} className="hover:bg-neutral-700 transition-colors py-2">
             <span>수정</span>
           </Link>
-          <button onClick={onDeletePost} className="w-full hover:bg-neutral-700 transition-colors py-2">삭제</button>
+          <Link href={`/posts/delete/${postId}`} className="hover:bg-neutral-700 transition-colors py-2">
+            <span>삭제</span>
+          </Link>
         </div>
         : null
       }
