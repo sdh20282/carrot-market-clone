@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'
 
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 
@@ -40,7 +39,9 @@ export default function PostOptions({
           <Link href={`/posts/edit/${postId}`} className="hover:bg-neutral-700 transition-colors py-2">
             <span>수정</span>
           </Link>
-          <Link href={`/posts/delete/${postId}`} className="hover:bg-neutral-700 transition-colors py-2">
+          <Link href={{
+            pathname: `/posts/delete/${postId}`
+          }} className="hover:bg-neutral-700 transition-colors py-2">
             <span>삭제</span>
           </Link>
         </div>

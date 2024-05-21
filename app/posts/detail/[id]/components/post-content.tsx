@@ -10,12 +10,11 @@ import { PostType } from "@/lib/database/get-post";
 import getSession from "@/lib/session/get-session";
 
 export default async function PostContent({
-  post, isLiked, likeCount, postId
+  post, isLiked, likeCount
 }: {
   post: PostType,
   isLiked: boolean,
-  likeCount: number,
-  postId: number,
+  likeCount: number
 }) {
   const session = await getSession();
 
@@ -42,7 +41,7 @@ export default async function PostContent({
         </div>
         {
           session.id === post?.userId
-          ? <PostOptions postId={postId} />
+          ? <PostOptions postId={post!.id} />
           : null
         }
       </div>
@@ -53,7 +52,7 @@ export default async function PostContent({
           <EyeIcon className="size-5" />
           <span>조회 {post!.views}</span>
         </div>
-        <LikeButton isLiked={isLiked} likeCount={likeCount} postId={postId} />
+        <LikeButton isLiked={isLiked} likeCount={likeCount} postId={post!.id} />
       </div>
     </>
   )

@@ -41,7 +41,6 @@ export default async function PostDetail({
         post={post}
         isLiked={isLiked}
         likeCount={likeCount}
-        postId={id}
       />
       <CommentSection postId={id} commentList={comments} user={user} />
     </div>
