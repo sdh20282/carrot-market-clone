@@ -12,8 +12,7 @@ export default function PostOptions({
   postId: number
 }) {
   const [onModal, setOnModal] = useState(false);
-  const router = useRouter();
-
+  
   const onClickModal = () => {
     setOnModal(state => !state);
   }
