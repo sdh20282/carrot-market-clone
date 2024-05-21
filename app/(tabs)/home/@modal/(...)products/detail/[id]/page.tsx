@@ -5,11 +5,9 @@ import Image from "next/image";
 import { UserIcon } from "@heroicons/react/24/solid";
 
 import CloseButton from "./components/close-button";
-import ProductDeleteButton from "@/components/product-delete-button";
 import { formatToWon } from "@/lib/utils";
 import getIsOwner from "@/lib/session/get-is-owner";
 import getProduct from "@/lib/database/get-product";
-import ProductEditButton from "@/components/product-edit-button";
 
 export default async function Modal({
   params
@@ -62,8 +60,8 @@ export default async function Modal({
               isOwner
               ? 
               <div className="flex gap-3">
-                <ProductDeleteButton id={product.id} />
-                <ProductEditButton id={product.id} />
+                <Link className="bg-red-500 px-5 py-2.5 rounded-md font-semibold text-white hover:bg-red-400 transition" href={`/products/delete/${product.id}`}>삭제하기</Link>
+                <Link className="bg-green-500 px-5 py-2.5 rounded-md font-semibold text-white hover:bg-green-400 transition" href={`/products/edit/${product.id}`}>수정하기</Link>
               </div>
               : null
             }

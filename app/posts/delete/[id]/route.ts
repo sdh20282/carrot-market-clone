@@ -9,7 +9,7 @@ import { getCachedPost } from "@/lib/database/get-post";
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const id = Number(params.id);
 
-  if (!id) {
+  if (!id || isNaN(id)) {
     return notFound();
   }
 

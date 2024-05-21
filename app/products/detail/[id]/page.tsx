@@ -4,14 +4,11 @@ import Image from "next/image";
 
 import { UserIcon } from "@heroicons/react/24/solid";
 
-import ProductDeleteButton from "@/components/product-delete-button";
-
 import { formatToWon } from "@/lib/utils";
 import { getCachedProduct } from "@/lib/database/get-product";
 import getProductIdList from "@/lib/database/get-product-id-list";
 import getIsOwner from "@/lib/session/get-is-owner";
 import { getCachedProductTitle } from "@/lib/database/get-product-title";
-import ProductEditButton from "@/components/product-edit-button";
 
 export async function generateMetadata({
   params
@@ -72,8 +69,8 @@ export default async function ProductDetail({
             isOwner
             ?
             <div className="flex gap-5">
-              <ProductDeleteButton id={product.id} />
-              <ProductEditButton id={product.id} />
+              <Link className="bg-red-500 px-5 py-2.5 rounded-md font-semibold text-white hover:bg-red-400 transition" href={`/products/delete/${product.id}`}>삭제하기</Link>
+              <Link className="bg-green-500 px-5 py-2.5 rounded-md font-semibold text-white hover:bg-green-400 transition" href={`/products/edit/${product.id}`}>수정하기</Link>
             </div>
             : null
           }
